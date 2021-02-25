@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd"> 
+    
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+    <!-- Console Appender -->
+    <appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <!--
+            # Pattern to output 
+            # r : time
+            # p : level
+            # t : thread
+            # c : component
+            # F : file name
+            # L : Line Number
+            # m : message
+            
+            <param name="ConversionPattern" value="%r %5p [%t] (%F:%L) - %m%n"/>
+            <param name="ConversionPattern" value="[%d] %5p - %m%n"/>
+            -->
+            <param name="ConversionPattern" value="[%d{MM-dd HH:mm:ss}] %5p - %m%n"/>
+        </layout>
+    </appender>
+    
+    <!-- DailyRollingFileAppender -->
+    <appender name="FILE" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="./log/loadtester.log"/>
+        <param name="DatePattern" value="'-'yyyy_MM_dd'.log'"/>
+        <param name="Append" value="true"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss}] %5p - %m%n"/>
+        </layout>
+    </appender>  
+
+    <!-- test -->
+    <category name="test" additivity="false">
+        <priority value="info" />
+        <appender-ref ref="STDOUT"/>
+        <!--
+        <appender-ref ref="SMTP"/>
+        <appender-ref ref="ROOT"/>
+        <appender-ref ref="SOCKET"/>
+        <appender-ref ref="TELNET"/>
+        -->
+    </category>
+
+    <!-- jetty -->
+    <category name="org.mortbay" additivity="false">
+        <priority value="info" />
+        <appender-ref ref="STDOUT"/>
+    </category>
+
+    <!-- spring -->
+    <category name="org.springframework" additivity="false">
+        <priority value="info" />
+        <appender-ref ref="STDOUT"/>
+    </category>
+
+    <!-- ehcache -->
+    <category name="net.sf.ehcache.Cache" additivity="false">
+        <priority value="info" />
+        <appender-ref ref="STDOUT"/>
+    </category>
+
+    <!-- apache mina -->
+    <category name="org.apache.mina" additivity="false">
+        <priority value="info" />
+        <appender-ref ref="STDOUT"/>
+    </category>
+    
+    <category name="org.apache.mina.filter.executor" additivity="false">
+        <priority value="info" />
+        <appender-ref ref="STDOUT"/>
+    </category>    
+
+    <category name="com.eactive.eai.adapter" additivity="false">
+        <priority value="info" />
+        <appender-ref ref="STDOUT"/>
+    </category>    
+
+    <!--  -->
+    <category name="FileLogger{NET}_" additivity="false">
+        <priority value="info" />
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+    </category>        
+
+    <!--  -->
+    <category name="FileLogger{ERRORNET}_" additivity="false">
+        <priority value="info" />
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+    </category>        
+
+    <!-- for socket adapters -->
+    <category name="FileLogger{BinClientAdapterGroup}_" additivity="false">
+        <priority value="info" />
+        <appender-ref ref="STDOUT"/>
+        <!--
+        <appender-ref ref="FILE"/>
+        -->
+    </category>
+    
+     <!-- root -->
+    <root>
+        <priority value="info" />
+        <appender-ref ref="STDOUT"/>
+        <!--
+        <appender-ref ref="FILE"/>
+        -->
+    </root>
+</log4j:configuration>
+

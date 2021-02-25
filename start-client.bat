@@ -1,0 +1,1 @@
+java -cp .\bin;.\lib\socketAdapter.jar -DEAISocket -Dlog4j.debug=false -Dlog4j.configuration=file:/D:/workspace/EAIClientTest/config/log4j.xml com.eactive.eai.client.EaiClientClient

@@ -10,7 +10,7 @@ public class EaiClientServer {
 	public EaiClientServer() {
 		
 	}
-	
+	// -DEAISocket -Dlog4j.debug=false -Dlog4j.configuration=file:/D:/workspace/EAIClientTest/config/log4j.xml
 	public static void startup(int port) {
 		SocketAdapterContext context = new SocketAdapterContext();
 		context = new SocketAdapterContext();
