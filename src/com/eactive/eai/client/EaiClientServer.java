@@ -24,6 +24,8 @@ public class EaiClientServer {
 		context.setTimeout(60);
 		context.setTraceLevel(context.TRACE_LEVEL_TRACE);
 		context.setRequestProcessor(new ToUpperRequestProcessor());
+		context.setMaxConnection(4);
+		context.setIdleTimeout(10);
 		
 		ISocketAdapter inboundServer = null;
 		try {
@@ -40,6 +42,15 @@ public class EaiClientServer {
 	
 	static public void main(String[] args) throws Exception {
 		int port = 8000;
+		
+		if(args.length > 0) {
+			try {
+				port = Integer.parseInt(args[0]);
+			}
+			catch(Exception e) {
+				;
+			}
+		}
 		EaiClientServer.startup(port);
 		System.out.println("Start TOUPPER Socket Server : port - "+ port);
 	}
