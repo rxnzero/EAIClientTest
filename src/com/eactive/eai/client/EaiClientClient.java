@@ -12,7 +12,7 @@ public class EaiClientClient {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public static void startup(String remoteHost, int port) {
+	public static void startup(String remoteHost, int port, boolean startServer) {
 		SocketAdapterContext context = new SocketAdapterContext();
 		/** 
 		 * Http Server  
@@ -38,33 +38,34 @@ public class EaiClientClient {
 			e1.printStackTrace();
 		}
 		
-		context = new SocketAdapterContext();
-		context.setProtocol("FIXED_LENGTH_HEADER");
-		context.setAdapterGroupName("ToUpperServer");
-		context.setAdapterName("InboundAdapter");
-		context.setBoundUsage("INBOUND");
-		context.setSocketType("SERVER");		
-		context.setPortNumber(port);
-		context.setResponseType("SYNC");
-		context.setTimeout(60);
-		context.setTraceLevel(context.TRACE_LEVEL_TRACE);
-		context.setRequestProcessor(new ToUpperRequestProcessor());
-		context.setMaxConnection(3);
-		context.setMaxThread(3);
-		context.setIdleTimeout(10);
-		
-		ISocketAdapter inboundServer = null;
-		try {
-			inboundServer = SocketAdapterFactory.createSocketAdapter(context);
-		} catch (EAIException e) {
-			e.printStackTrace();
+		if(startServer) {
+			context = new SocketAdapterContext();
+			context.setProtocol("FIXED_LENGTH_HEADER");
+			context.setAdapterGroupName("ToUpperServer");
+			context.setAdapterName("InboundAdapter");
+			context.setBoundUsage("INBOUND");
+			context.setSocketType("SERVER");		
+			context.setPortNumber(port);
+			context.setResponseType("SYNC");
+			context.setTimeout(20);
+			context.setTraceLevel(context.TRACE_LEVEL_TRACE);
+			context.setRequestProcessor(new ToUpperRequestProcessor());
+			context.setMaxConnection(4);
+			context.setMaxThread(4);
+	//		context.setIdleTimeout(10);
+			
+			ISocketAdapter inboundServer = null;
+			try {
+				inboundServer = SocketAdapterFactory.createSocketAdapter(context);
+			} catch (EAIException e) {
+				e.printStackTrace();
+			}
+			try {
+				inboundServer.start().join();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-		try {
-			inboundServer.start().join();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
 		context = new SocketAdapterContext();
 		context.setProtocol("FIXED_LENGTH_HEADER");
 		context.setAdapterGroupName("ToUpperClient");
@@ -74,9 +75,10 @@ public class EaiClientClient {
 		context.setHostName(remoteHost);
 		context.setPortNumber(port);
 		context.setResponseType("SYNC");
-		context.setTimeout(60);
+		context.setTimeout(20);
+//		context.setIdleTimeout(30);
 		context.setTraceLevel(context.TRACE_LEVEL_TRACE);
-		context.setRequestProcessor(new ToUpperRequestProcessor());
+//		context.setRequestProcessor(new ToUpperRequestProcessor());
 		context.setMaxConnection(4);
 		context.setMaxThread(4);
 		context.setPollingUse("Y");
@@ -96,7 +98,7 @@ public class EaiClientClient {
 	
 	static public void main(String[] args) throws Exception {
 		System.out.println("Start TOUPPER Socket Client - port : " + 8000);
-		EaiClientClient.startup("localhost", 8000);
+		EaiClientClient.startup("localhost", 8000, false);
 		
 		
 		byte[] response = (byte[])outbound.sendMessage("hello".getBytes());
